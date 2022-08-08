@@ -1,3 +1,4 @@
+from functools import wraps
 from typing import Any
 
 import numpy as np
@@ -117,8 +118,8 @@ class Ratio:
 
 
 def positive_number_dec(*attributes):
-    """ Makes sure attributes can only be set to a positive number
-    """
+    """Makes sure attributes can only be set to a positive number"""
+
     def decorator(cls):
         attribute_dict = dict()
         for attr in attributes:
@@ -129,8 +130,8 @@ def positive_number_dec(*attributes):
 
 
 def positive_number_or_none_dec(*attributes):
-    """ Makes sure attributes can only be set to a positive number or None
-    """
+    """Makes sure attributes can only be set to a positive number or None"""
+
     def decorator(cls):
         attribute_dict = dict()
         for attr in attributes:
@@ -141,8 +142,8 @@ def positive_number_or_none_dec(*attributes):
 
 
 def ratio_dec(*attributes):
-    """ Makes sure attributes can only be set to a ratio ( >= 0 and <= 1)
-    """
+    """Makes sure attributes can only be set to a ratio ( >= 0 and <= 1)"""
+
     def decorator(cls):
         attribute_dict = dict()
         for attr in attributes:
@@ -150,3 +151,32 @@ def ratio_dec(*attributes):
         return type(cls.__name__, (cls,), attribute_dict)
 
     return decorator
+
+
+def no_new_attributes(cls):
+    """Prevents setting unexisting attributes"""
+    # source : https://stackoverflow.com/questions
+    # /3603502/prevent-creating-new-attributes-outside-init
+
+    cls.__frozen = False
+
+    def frozensetattr(self, key, value):
+        if self.__frozen and not hasattr(self, key):
+            raise AttributeError(
+                f"Cannot create unexisting attribute {key}={value}"
+            )
+        else:
+            object.__setattr__(self, key, value)
+
+    def init_decorator(func):
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            func(self, *args, **kwargs)
+            self.__frozen = True
+
+        return wrapper
+
+    cls.__setattr__ = frozensetattr
+    cls.__init__ = init_decorator(cls.__init__)
+
+    return cls

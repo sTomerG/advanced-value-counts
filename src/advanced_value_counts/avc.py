@@ -5,8 +5,12 @@ import pandas as pd
 import seaborn as sns
 
 from .df_mutations import get_avc_df
-from .value_checks import (positive_number_dec, positive_number_or_none_dec,
-                           ratio_dec)
+from .value_checks import (
+    no_new_attributes,
+    positive_number_dec,
+    positive_number_or_none_dec,
+    ratio_dec,
+)
 
 
 @positive_number_dec("min_group_count", "min_subgroup_count")
@@ -14,6 +18,7 @@ from .value_checks import (positive_number_dec, positive_number_or_none_dec,
 @ratio_dec(
     "min_group_ratio", "min_subgroup_ratio", "min_subgroup_ratio_vs_total"
 )
+@no_new_attributes  # makes sure no new attributes can be set
 class AdvancedValueCounts:
     def __init__(
         self,

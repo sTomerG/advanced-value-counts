@@ -74,33 +74,54 @@ def test_unhappy_types_at_init(arguments: Tuple[dict]):
 
 
 @pytest.mark.parametrize(
-    "arguments",
+    "attribute, value",
     [
-        ({"max_groups": "1"}),
-        ({"min_group_ratio": "1"}),
-        ({"min_group_count": "1"}),
-        ({"max_subgroups": "1"}),
-        ({"min_subgroup_ratio": "1"}),
-        ({"min_subgroup_count": "1"}),
-        ({"min_subgroup_ratio_vs_total": "1"}),
-        ({"round_ratio": "1"}),
-        ({"max_groups": False}),
-        ({"min_group_ratio": False}),
-        ({"min_group_count": False}),
-        ({"max_subgroups": False}),
-        ({"min_subgroup_ratio": False}),
-        ({"min_subgroup_count": False}),
-        ({"min_subgroup_ratio_vs_total": False}),
-        ({"round_ratio": False}),
+        ("max_groups", "1"),
+        ("min_group_ratio", "1"),
+        ("min_group_count", "1"),
+        ("max_subgroups", "1"),
+        ("min_subgroup_ratio", "1"),
+        ("min_subgroup_count", "1"),
+        ("min_subgroup_ratio_vs_total", "1"),
+        ("round_ratio", "1"),
+        ("max_groups", False),
+        ("min_group_ratio", False),
+        ("min_group_count", False),
+        ("max_subgroups", False),
+        ("min_subgroup_ratio", False),
+        ("min_subgroup_count", False),
+        ("min_subgroup_ratio_vs_total", False),
+        ("round_ratio", False),
     ],
 )
-def test_set_unhappy_types(arguments: Tuple[dict]):
+def test_set_unhappy_types(attribute: str, value: Any):
     """Test whether setting unhappy types raises a TypeError
 
     Args:
-        arguments (Tuple[dict]): tuple containing a dict with
-        {attribute: value}
+        attribute (str): name of an unexisting attribute
+        value (Any): any value
     """
     avc = AVC(df=DF, column=COLUMN)
     with pytest.raises(TypeError):
-        setattr(avc, **arguments)
+        setattr(avc, attribute, value)
+
+
+@pytest.mark.parametrize(
+    "attribute, value",
+    [
+        ("new_attribute", "text"),
+        ("unexisting", 1),
+        ("not_set", False),
+    ],
+)
+def test_set_unexisting_attribute(attribute: str, value: Any):
+    """Test whether setting an unexisting attribute rightously raises
+    an AttributeError
+
+    Args:
+        attribute (str): name of an unexisting attribute
+        value (Any): any value
+    """
+    avc = AVC(df=DF, column=COLUMN)
+    with pytest.raises(AttributeError):
+        setattr(avc, attribute, value)
