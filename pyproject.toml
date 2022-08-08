@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling>=1.4.1, < 2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "advanced-value-counts"
+authors = [
+  { name="Tomer Gabay", email="tomergabay001@gmail.com" },
+]
+readme = "README.md"
+description = "A package to perform an advanced pandas' value_counts()"
+license = "MIT"
+requires-python = ">=3.8"
+keywords = [
+    "eda",
+    "pandas",
+    "value_counts",
+    "advanced",
+    "counts"
+]
+dependencies = [
+    "pandas >= 1.0.5, < 2",
+    "numpy >= 1.18.5, < 2",
+    "seaborn >= 0.9, < 1"
+]
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+
+dynamic = ["version"]
+
+[tool.hatch.version]
+path = "src/advanced_value_counts/__init__.py"
+
+[project.urls]
+"Homepage" = "https://github.com/sTomerG/advanced-value-counts"
+"Bug Tracker" = "https://github.com/sTomerG/advanced-value-counts/issues"
+
