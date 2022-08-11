@@ -116,12 +116,12 @@ def test_set_unhappy_types(attribute: str, value: Any):
 )
 def test_set_unexisting_attribute(attribute: str, value: Any):
     """Test whether setting an unexisting attribute rightously raises
-    an AttributeError
+    a UserWarning
 
     Args:
         attribute (str): name of an unexisting attribute
         value (Any): any value
     """
     avc = AVC(df=DF, column=COLUMN)
-    with pytest.raises(AttributeError):
+    with pytest.warns(UserWarning):
         setattr(avc, attribute, value)
