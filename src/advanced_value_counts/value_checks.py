@@ -1,5 +1,6 @@
 from functools import wraps
 from typing import Any
+from warnings import warn
 
 import numpy as np
 
@@ -153,7 +154,7 @@ def ratio_dec(*attributes):
     return decorator
 
 
-def no_new_attributes(cls):
+def new_attribute_warning(cls):
     """Prevents setting unexisting attributes"""
     # source : https://stackoverflow.com/questions
     # /3603502/prevent-creating-new-attributes-outside-init
@@ -162,11 +163,9 @@ def no_new_attributes(cls):
 
     def frozensetattr(self, key, value):
         if self.__frozen and not hasattr(self, key):
-            raise AttributeError(
-                f"Cannot create unexisting attribute {key}={value}"
-            )
-        else:
-            object.__setattr__(self, key, value)
+            warn(f"{cls.__name__} doesn't have attribute '{key}'")
+
+        object.__setattr__(self, key, value)
 
     def init_decorator(func):
         @wraps(func)

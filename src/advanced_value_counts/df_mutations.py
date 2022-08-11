@@ -72,21 +72,28 @@ def get_avc_df(
     # minimal count is too small
     if groupby_col:
         dfc[groupby_col] = group_uncommon_values(
-            dfc,
-            groupby_col,
+            df=dfc,
+            column=groupby_col,
             max_groups=max_groups,
             min_ratio=min_group_ratio,
             min_count=min_group_count,
+            dropna=dropna,
         )
         dfc[column] = group_uncommon_values(
-            dfc,
-            column,
+            df=dfc,
+            column=column,
             min_ratio=min_subgroup_ratio_vs_total,
             min_count=min_subgroup_count,
+            dropna=dropna,
         )
     else:
         dfc[column] = group_uncommon_values(
-            dfc, column, max_groups, min_group_ratio, min_group_count
+            df=dfc,
+            column=column,
+            max_groups=max_groups,
+            min_ratio=min_group_ratio,
+            min_count=min_group_count,
+            dropna=dropna,
         )
 
     # replace na's with _na as a string
@@ -124,8 +131,8 @@ def get_avc_df(
             "subgroup_ratio"
         ].round(round_ratio)
         if groupby_col:
-            value_counts_df["ratio_vs_total"] = value_counts_df[
-                "ratio_vs_total"
+            value_counts_df["r_vs_total"] = value_counts_df[
+                "r_vs_total"
             ].round(round_ratio)
 
     # groupby the two columns again to get the final DataFrame
@@ -227,6 +234,7 @@ def group_uncommon_values(
     max_groups: int = None,
     min_ratio: float = 0,
     min_count: int = 1,
+    dropna: bool = False,
     uncommon_group_name: str = "_other",
 ):
 
@@ -257,16 +265,28 @@ def group_uncommon_values(
     """
 
     # get the value counts of the column
-    value_counts = df[column].value_counts()
+    value_counts = df[column].value_counts(dropna=dropna)
+    value_counts.index = value_counts.index.fillna("_na")
 
+    # make sure _na won't be dropped if dropna == False
+    groups = [] if dropna else ["_na"]
+
+    # make sure max_groups is not affected by _na, by increasing
+    # max_groups by 1 if _na is in the n biggest groups with
+    # n = max_groups
+    if max_groups:
+        max_groups = (
+            max_groups
+            if "_na" not in value_counts.head(max_groups).index
+            else max_groups + 1
+        )
     # determine the names of the groups that are allowed, based on if
     # max_groups is set or not
-    groups = (
-        value_counts.head(max_groups).index
+    groups += (
+        value_counts.head(max_groups).index.tolist()
         if max_groups is not None
-        else value_counts.index
+        else value_counts.index.tolist()
     )
-
     # get a truth value for when a value count is less than the minimal ratio
     # or less than the minimal count
     conditions = (
@@ -275,8 +295,8 @@ def group_uncommon_values(
         | ~value_counts.index.isin(groups)
     )
 
-    # replace labels with '_other' if the count (ratio) is less than the
-    # minimal count (ratio)
+    # replace labels with uncommon_group_name if the count (ratio) is les
+    # than the minimal count (ratio)
     return np.where(
         df[column].isin(value_counts[conditions].index),
         uncommon_group_name,
@@ -310,6 +330,7 @@ def group_uncommon_subgroups(
 
         min_subgroup_count (int, optional): minimal amount of counts for a
         subgroup within a group. Defaults to 1.
+
         min_subgroup_ratio_vs_total (float, optional): minimal ratio for a
         subgroup compared to the entire DataFrame. Defaults to 0.
 

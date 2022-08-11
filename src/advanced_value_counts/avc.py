@@ -1,12 +1,11 @@
 from warnings import warn
 
-import numpy as np
 import pandas as pd
 import seaborn as sns
 
 from .df_mutations import get_avc_df
 from .value_checks import (
-    no_new_attributes,
+    new_attribute_warning,
     positive_number_dec,
     positive_number_or_none_dec,
     ratio_dec,
@@ -18,7 +17,7 @@ from .value_checks import (
 @ratio_dec(
     "min_group_ratio", "min_subgroup_ratio", "min_subgroup_ratio_vs_total"
 )
-@no_new_attributes  # makes sure no new attributes can be set
+@new_attribute_warning  # genereates warning if new attribute is set
 class AdvancedValueCounts:
     def __init__(
         self,
@@ -155,100 +154,6 @@ class AdvancedValueCounts:
               AdvancedValueCounts DataFrame:
               {self.avc_df}"""
 
-    def group_uncommon_subgroups(
-        value_counts_df: pd.DataFrame,
-        column: str,
-        max_subgroups: int = None,
-        min_subgroup_ratio: float = 0,
-        min_subgroup_count: int = 1,
-        min_subgroup_ratio_vs_total: float = 0,
-    ):
-        """Changes column values of uncommon subgroups of a grouped-by
-        DataFrame based on the parameters to '_other'
-
-        Args:
-            value_counts_df (pd.DataFrame): a pd.DataFrame with columns
-            'subgroup_ratio' and 'count'
-
-            column (str): the column name with the subgroups of a
-            grouped-by dataframe
-
-            max_subgroups (int, optional): maximal amount of subgroups within
-            a group. Defaults to None.
-
-            min_subgroup_ratio (float, optional): minimal amount of ratio of a
-            subgroup within a group. Defaults to 0.
-
-            min_subgroup_count (int, optional): minimal amount of counts for a
-            subgroup within a group. Defaults to 1.
-
-            min_subgroup_ratio_vs_total (float, optional): minimal ratio for a
-            subgroup compared to the entire DataFrame. Defaults to 0.
-
-        Returns:
-            pd.Series: the pd.Series of the column of the df, with possibly
-            some values changed to '_other'
-        """
-
-        # get the total count
-        total_count = np.max(value_counts_df["count"])
-
-        # get the ratio vs total
-        value_counts_df["r_vs_total"] = value_counts_df["count"] / total_count
-
-        # reset the subgroup index column to easier change values
-        value_counts_df.reset_index(level=column, inplace=True)
-
-        # select allowed subgroups based on max_subgroups
-        if max_subgroups:
-            subgroups = (
-                value_counts_df.loc[
-                    "_all", [column, "count"]
-                ]  # select the column and count column of the _all group
-                .sort_values(
-                    by="count", ascending=False
-                )  # sort by count, descending
-                .iloc[1 : max_subgroups + 1][column]
-                .values
-            )
-            # select the top columns, [1:max_subgroups+1] is
-            # due to the total subgroup
-
-        # if max_subgroups is not set, all subgroups are allowed based
-        # on max_subgroups
-        else:
-            subgroups = value_counts_df[column].unique()
-
-        # set conditions for which the value should not be changed to '_other'
-        min_subgroup_count_condition = (
-            value_counts_df["count"] < min_subgroup_count
-        ) | (value_counts_df["subgroup_ratio"] < min_subgroup_ratio)
-
-        total_ratio_condition = (
-            value_counts_df["r_vs_total"] < min_subgroup_ratio_vs_total
-        )
-
-        special_column_condition = ~value_counts_df[column].isin(
-            ["_na", "_total"]
-        )
-        max_subgroup_condition = ~value_counts_df[column].isin(subgroups)
-
-        # change values to'_other' if the following conditions are met:
-        # if (the subgroup count OR the within group ratio are below thresholds
-        # OR the ratio vs total is smaller than the threshold
-        # OR the column is not allowed according the max amount of subgroups)
-        # AND if the column is not a special column
-        return np.where(
-            (
-                min_subgroup_count_condition
-                | total_ratio_condition
-                | max_subgroup_condition
-            )
-            & special_column_condition,
-            "_other",
-            value_counts_df[column],
-        )
-
     def get_plot(self, normalize: bool = True):
 
         """Returns a bar plot with either relative of absolute counts
@@ -262,7 +167,7 @@ class AdvancedValueCounts:
         """
 
         if self.groupby_col:
-            ax = self.get_grouped_count_plot(normalize)
+            ax = self._get_grouped_count_plot(normalize)
         else:
             dfc = self.avc_df.copy()
             ax = sns.barplot(
@@ -274,7 +179,7 @@ class AdvancedValueCounts:
             )
             return ax
 
-    def get_grouped_count_plot(self, normalize: bool = True):
+    def _get_grouped_count_plot(self, normalize: bool = True):
 
         """Returns a bar plot for the counts of a groupedby
         AdvancedValueCounts DataFrame
