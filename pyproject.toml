@@ -41,8 +41,7 @@ classifiers = [
 exclude = [
     ".tox",
     ".venv",
-    ".vscode",
-    "dist"
+    ".vscode"
 ]
 
 dynamic = ["version"]
