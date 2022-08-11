@@ -1,6 +1,6 @@
 <h1>Welcome to advanced-value-counts</h1>
 
-advanced-value-counts is a Python-package containing the `AdvancedValueCounts` class that makes use of pandas [`.value_counts()`](https://pandas.pydata.org/docs/reference/api/pandas.Series.value_counts.html) and [seaborn](https://seaborn.pydata.org/) to easily get a lot of info about the counts of a (categorical) column in a pandas DataFrame. The potential of this package is at its peak when wanting info of counts of a column after a grouping: `df.groupby(groupby_col)[column].value_counts()`. See [Usage](#usage)
+advanced-value-counts is a Python-package containing the `AdvancedValueCounts` class that makes use of pandas' [`.value_counts()`](https://pandas.pydata.org/docs/reference/api/pandas.Series.value_counts.html), [`.groupby()`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) and [seaborn](https://seaborn.pydata.org/) to easily get a lot of info about the counts of a (categorical) column in a pandas DataFrame. The potential of this package is at its peak when wanting info of counts of a column after a grouping: `df.groupby(groupby_col)[column].value_counts()`. See [Usage](#usage) on how to use `AdvancedValueCounts`. Read [this medium article](link) or consult [this notebook](https://github.com/sTomerG/advanced-value-counts/blob/main/notebooks/medium_notebook.ipynb) for an explanation on the added value of this package.
 
 
 
@@ -35,9 +35,9 @@ To test whether the installation was succesfull run in the advanced-value-counts
 
 # Usage
 
-The example below uses a modified version of the [Titanic dataset from Kaggle](https://www.kaggle.com/c/titanic), which can be found in this GitRepo [here](https://github.com/sTomerG/advanced-value-counts/tree/main/tests/data). 
+The example below uses a modified version of the [Titanic dataset from Kaggle](https://www.kaggle.com/c/titanic), which can be found in this GitRepo [here](https://github.com/sTomerG/advanced-value-counts/tree/main/tests/data/titanic.csv). 
 
-The code of this notebook can be found [here](https://github.com/sTomerG/advanced-value-counts/tree/main/notebooks/usage_notebook)
+The code of this notebook can be found [here](https://github.com/sTomerG/advanced-value-counts/tree/main/notebooks/usage_notebook.ipynb).
 
 
 ```python
@@ -858,7 +858,7 @@ Linux / MacOS:
 
 **Install requirements**
 
-    python3 -m pip install --upgrade pip
+    python -m pip install --upgrade pip
     pip install -r requirements/requirements.txt
 
 **Test if everything works properly**
