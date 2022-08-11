@@ -1,3 +1,5 @@
+# requirements needed for testing of
+# the minimal dependencies of the package
 numpy==1.18.5
 pandas==1.0.5
 seaborn==0.9.0

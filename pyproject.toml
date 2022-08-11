@@ -7,16 +7,20 @@ name = "advanced-value-counts"
 authors = [
   { name="Tomer Gabay", email="tomergabay001@gmail.com" },
 ]
-readme = "README.md"
-description = "A package to perform an advanced pandas' value_counts()"
+readme = "README_pypi.md"
+description = "A package to perform an advanced version of pandas' value_counts()"
 license = "MIT"
 requires-python = ">=3.8"
 keywords = [
     "eda",
     "pandas",
     "value_counts",
+    "groupby",
     "advanced",
-    "counts"
+    "counts",
+    "ratios",
+    "data science",
+    "data analytics"
 ]
 dependencies = [
     "pandas >= 1.0.5, < 2",
@@ -34,6 +38,13 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 
+exclude = [
+    ".tox",
+    ".venv",
+    ".vscode",
+    "dist"
+]
+
 dynamic = ["version"]
 
 [tool.hatch.version]
@@ -42,4 +53,6 @@ path = "src/advanced_value_counts/__init__.py"
 [project.urls]
 "Homepage" = "https://github.com/sTomerG/advanced-value-counts"
 "Bug Tracker" = "https://github.com/sTomerG/advanced-value-counts/issues"
+
+
 
