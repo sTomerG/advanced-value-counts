@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling>=1.4.1, < 2"]
-build-backend = "hatchling.build"
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "advanced-value-counts"
@@ -9,8 +9,9 @@ authors = [
 ]
 readme = "README_pypi.md"
 description = "A package to perform an advanced version of pandas' value_counts()"
-license = "MIT"
+license = {text = "MIT"}
 requires-python = ">=3.8"
+
 keywords = [
     "eda",
     "pandas",
@@ -38,16 +39,22 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 
-exclude = [
-    ".tox",
-    ".venv",
-    ".vscode"
-]
-
 dynamic = ["version"]
 
-[tool.hatch.version]
-path = "src/advanced_value_counts/__init__.py"
+[tool.setuptools.dynamic]
+version = {attr = "advanced_value_counts.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["advanced_value_counts"]
+exclude = ["*notebooks*", "*tests*"]
+
+[project.optional-dependencies]
+test = [
+    "pytest >= 7.1.2, < 8",
+    "flake8 >= 5.0.4, < 6",
+    "tox >= 3.25.1, < 4"
+]
 
 [project.urls]
 "Homepage" = "https://github.com/sTomerG/advanced-value-counts"

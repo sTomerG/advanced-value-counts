@@ -137,11 +137,27 @@ def get_avc_df(
 
     # groupby the two columns again to get the final DataFrame
     if groupby_col:
-        return (
+        value_counts_df = (
             value_counts_df.groupby([value_counts_df.index, column])
             .sum()
             .sort_index()
         )
+        # return value_counts_df
+        value_counts_df = add_subgroup_diff_vs_total(
+            value_counts_df,
+            col="subgroup_ratio",
+            new_col="subgr_r_diff_subgr_all",
+        )
+
+        return value_counts_df.loc[
+            :,
+            [
+                "count",
+                "subgroup_ratio",
+                "subgr_r_diff_subgr_all",
+                "r_vs_total",
+            ],
+        ]
 
     else:
         return value_counts_df.sort_values("count", ascending=False)
@@ -376,19 +392,59 @@ def group_uncommon_subgroups(
     )
     special_column_condition = ~value_counts_df[column].isin(["_na", "_total"])
     max_subgroup_condition = ~value_counts_df[column].isin(subgroups)
+    not_index_all_condition = (
+        value_counts_df.index.get_level_values(0) != "_all"
+    )
 
     # change values to'_other' if the conditions following conditions are met:
     # if (the subgroup count OR the witihin group ratio are below thresholds
     # OR the ratio vs total is smaller than the threshold
     # OR the column is not allowed according to the max amount of subgroups)
     # AND if the column is not a special column
-    return np.where(
+    # AND the column is not in the _all main group
+    value_counts_df[column] = np.where(
         (
             min_subgroup_count_condition
             | total_ratio_condition
             | max_subgroup_condition
         )
-        & special_column_condition,
+        & special_column_condition
+        & not_index_all_condition,
         "_other",
         value_counts_df[column],
     )
+
+    # select all the subgroups names which are in the main groups
+    # because those need to be retained in the _all main group
+    subgroups_in_groups = set(value_counts_df.drop("_all")[column])
+
+    # convert subgroups which are not in the main groups in the
+    # _all group to _other
+    return np.where(
+        (value_counts_df.index == "_all")
+        & (~value_counts_df[column].isin(subgroups_in_groups)),
+        "_other",
+        value_counts_df[column],
+    )
+
+
+def add_subgroup_diff_vs_total(
+    df: pd.DataFrame, col: str, new_col: str
+) -> pd.DataFrame:
+    """Adds column with the difference between a column statistic of a subgroup
+    in a group vs that subgroup overall.
+
+    Args:
+        df (pd.DataFrame): a pd.DataFrame to
+        col (str): the column name to calculate the difference on
+        new_col (str): name of the new column with the calculated differences
+
+    Returns:
+        pd.DataFrame: a modified copy of the inputted pd.DataFrame
+    """
+    dfc = df.copy()
+    for index, _ in dfc.drop("_all").iterrows():
+        dfc.loc[index, new_col] = (
+            df.loc[index, col] - df.loc[("_all", index[1]), col]
+        )
+    return dfc
