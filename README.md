@@ -149,34 +149,14 @@ avc.avc_df
       <td>2</td>
     </tr>
     <tr>
-      <th>Mlle.</th>
-      <td>0.002245</td>
-      <td>2</td>
-    </tr>
-    <tr>
       <th>Col.</th>
       <td>0.002245</td>
       <td>2</td>
     </tr>
     <tr>
-      <th>Capt.</th>
-      <td>0.001122</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Sir.</th>
-      <td>0.001122</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Mme.</th>
-      <td>0.001122</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Jonkheer.</th>
-      <td>0.001122</td>
-      <td>1</td>
+      <th>Mlle.</th>
+      <td>0.002245</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>Countess.</th>
@@ -184,7 +164,7 @@ avc.avc_df
       <td>1</td>
     </tr>
     <tr>
-      <th>Lady.</th>
+      <th>Capt.</th>
       <td>0.001122</td>
       <td>1</td>
     </tr>
@@ -194,7 +174,27 @@ avc.avc_df
       <td>1</td>
     </tr>
     <tr>
+      <th>Sir.</th>
+      <td>0.001122</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Lady.</th>
+      <td>0.001122</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Mme.</th>
+      <td>0.001122</td>
+      <td>1</td>
+    </tr>
+    <tr>
       <th>Don.</th>
+      <td>0.001122</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Jonkheer.</th>
       <td>0.001122</td>
       <td>1</td>
     </tr>
@@ -211,6 +211,7 @@ Set `min_group_count` to 5 to group small groups into `'_other'` group
 avc.min_group_count = 5
 avc.avc_df
 ```
+
 
 
 
@@ -288,18 +289,21 @@ avc_grouped.avc_df
 
 
 
+
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
       <th></th>
-      <th>subgroup_ratio</th>
       <th>count</th>
+      <th>subgroup_ratio</th>
+      <th>subgr_r_diff_subgr_all</th>
       <th>r_vs_total</th>
     </tr>
     <tr>
       <th>CabinArea</th>
       <th>Title</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -309,37 +313,43 @@ avc_grouped.avc_df
     <tr>
       <th rowspan="5" valign="top">A</th>
       <th>Col.</th>
-      <td>0.066667</td>
       <td>1</td>
+      <td>0.066667</td>
+      <td>0.064422</td>
       <td>0.001122</td>
     </tr>
     <tr>
       <th>Lady.</th>
-      <td>0.066667</td>
       <td>1</td>
+      <td>0.066667</td>
+      <td>0.065544</td>
       <td>0.001122</td>
     </tr>
     <tr>
       <th>Master.</th>
-      <td>0.066667</td>
       <td>1</td>
+      <td>0.066667</td>
+      <td>0.021773</td>
       <td>0.001122</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.733333</td>
       <td>11</td>
+      <td>0.733333</td>
+      <td>0.153086</td>
       <td>0.012346</td>
     </tr>
     <tr>
       <th>Sir.</th>
-      <td>0.066667</td>
       <td>1</td>
+      <td>0.066667</td>
+      <td>0.065544</td>
       <td>0.001122</td>
     </tr>
     <tr>
       <th>...</th>
       <th>...</th>
+      <td>...</td>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -347,37 +357,42 @@ avc_grouped.avc_df
     <tr>
       <th rowspan="5" valign="top">_na</th>
       <th>Mrs.</th>
-      <td>0.117904</td>
       <td>81</td>
+      <td>0.117904</td>
+      <td>-0.022388</td>
       <td>0.090909</td>
     </tr>
     <tr>
       <th>Ms.</th>
-      <td>0.001456</td>
       <td>1</td>
+      <td>0.001456</td>
+      <td>0.000333</td>
       <td>0.001122</td>
     </tr>
     <tr>
       <th>Rev.</th>
-      <td>0.008734</td>
       <td>6</td>
+      <td>0.008734</td>
+      <td>0.002000</td>
       <td>0.006734</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.005822</td>
       <td>4</td>
+      <td>0.005822</td>
+      <td>-0.002034</td>
       <td>0.004489</td>
     </tr>
     <tr>
       <th>_total</th>
-      <td>1.000000</td>
       <td>687</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
       <td>0.771044</td>
     </tr>
   </tbody>
 </table>
-<p>74 rows × 3 columns</p>
+<p>74 rows × 4 columns</p>
 </div>
 
 
@@ -393,18 +408,21 @@ avc_grouped.avc_df
 ```
 
 
+
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
       <th></th>
-      <th>subgroup_ratio</th>
       <th>count</th>
+      <th>subgroup_ratio</th>
+      <th>subgr_r_diff_subgr_all</th>
       <th>r_vs_total</th>
     </tr>
     <tr>
       <th>CabinArea</th>
       <th>Title</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -414,216 +432,251 @@ avc_grouped.avc_df
     <tr>
       <th rowspan="6" valign="top">B</th>
       <th>Miss.</th>
-      <td>0.298</td>
       <td>14</td>
+      <td>0.298</td>
+      <td>0.094</td>
       <td>0.016</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.340</td>
       <td>16</td>
+      <td>0.340</td>
+      <td>-0.240</td>
       <td>0.018</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.213</td>
       <td>10</td>
+      <td>0.213</td>
+      <td>0.073</td>
       <td>0.011</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.021</td>
       <td>1</td>
+      <td>0.021</td>
+      <td>0.013</td>
       <td>0.001</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.127</td>
       <td>6</td>
+      <td>0.127</td>
+      <td>0.111</td>
       <td>0.007</td>
     </tr>
     <tr>
       <th>_total</th>
-      <td>1.000</td>
       <td>47</td>
+      <td>1.000</td>
+      <td>0.000</td>
       <td>0.053</td>
     </tr>
     <tr>
       <th rowspan="6" valign="top">C</th>
       <th>Miss.</th>
-      <td>0.203</td>
       <td>12</td>
+      <td>0.203</td>
+      <td>-0.001</td>
       <td>0.013</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.492</td>
       <td>29</td>
+      <td>0.492</td>
+      <td>-0.088</td>
       <td>0.033</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.237</td>
       <td>14</td>
+      <td>0.237</td>
+      <td>0.097</td>
       <td>0.016</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.017</td>
       <td>1</td>
+      <td>0.017</td>
+      <td>0.009</td>
       <td>0.001</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.051</td>
       <td>3</td>
+      <td>0.051</td>
+      <td>0.035</td>
       <td>0.003</td>
     </tr>
     <tr>
       <th>_total</th>
-      <td>1.000</td>
       <td>59</td>
+      <td>1.000</td>
+      <td>0.000</td>
       <td>0.066</td>
     </tr>
     <tr>
       <th rowspan="8" valign="top">_all</th>
       <th>Master.</th>
-      <td>0.045</td>
       <td>40</td>
+      <td>0.045</td>
+      <td>NaN</td>
       <td>0.045</td>
     </tr>
     <tr>
       <th>Miss.</th>
-      <td>0.204</td>
       <td>182</td>
+      <td>0.204</td>
+      <td>NaN</td>
       <td>0.204</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.580</td>
       <td>517</td>
+      <td>0.580</td>
+      <td>NaN</td>
       <td>0.580</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.140</td>
       <td>125</td>
+      <td>0.140</td>
+      <td>NaN</td>
       <td>0.140</td>
     </tr>
     <tr>
       <th>Rev.</th>
-      <td>0.007</td>
       <td>6</td>
+      <td>0.007</td>
+      <td>NaN</td>
       <td>0.007</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.008</td>
       <td>7</td>
+      <td>0.008</td>
+      <td>NaN</td>
       <td>0.008</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.016</td>
       <td>14</td>
+      <td>0.016</td>
+      <td>NaN</td>
       <td>0.016</td>
     </tr>
     <tr>
       <th>_total</th>
-      <td>1.000</td>
       <td>891</td>
+      <td>1.000</td>
+      <td>NaN</td>
       <td>1.000</td>
     </tr>
     <tr>
       <th rowspan="8" valign="top">_na</th>
       <th>Master.</th>
-      <td>0.048</td>
       <td>33</td>
+      <td>0.048</td>
+      <td>0.003</td>
       <td>0.037</td>
     </tr>
     <tr>
       <th>Miss.</th>
-      <td>0.197</td>
       <td>135</td>
+      <td>0.197</td>
+      <td>-0.007</td>
       <td>0.152</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.617</td>
       <td>424</td>
+      <td>0.617</td>
+      <td>0.037</td>
       <td>0.476</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.118</td>
       <td>81</td>
+      <td>0.118</td>
+      <td>-0.022</td>
       <td>0.091</td>
     </tr>
     <tr>
       <th>Rev.</th>
-      <td>0.009</td>
       <td>6</td>
+      <td>0.009</td>
+      <td>0.002</td>
       <td>0.007</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.006</td>
       <td>4</td>
+      <td>0.006</td>
+      <td>-0.002</td>
       <td>0.004</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.006</td>
       <td>4</td>
+      <td>0.006</td>
+      <td>-0.010</td>
       <td>0.004</td>
     </tr>
     <tr>
       <th>_total</th>
-      <td>1.000</td>
       <td>687</td>
+      <td>1.000</td>
+      <td>0.000</td>
       <td>0.771</td>
     </tr>
     <tr>
       <th rowspan="7" valign="top">_other</th>
       <th>Master.</th>
-      <td>0.051</td>
       <td>5</td>
+      <td>0.051</td>
+      <td>0.006</td>
       <td>0.006</td>
     </tr>
     <tr>
       <th>Miss.</th>
-      <td>0.214</td>
       <td>21</td>
+      <td>0.214</td>
+      <td>0.010</td>
       <td>0.024</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.490</td>
       <td>48</td>
+      <td>0.490</td>
+      <td>-0.090</td>
       <td>0.054</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.204</td>
       <td>20</td>
+      <td>0.204</td>
+      <td>0.064</td>
       <td>0.022</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.010</td>
       <td>1</td>
+      <td>0.010</td>
+      <td>0.002</td>
       <td>0.001</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.031</td>
       <td>3</td>
+      <td>0.031</td>
+      <td>0.015</td>
       <td>0.003</td>
     </tr>
     <tr>
       <th>_total</th>
-      <td>1.000</td>
       <td>98</td>
+      <td>1.000</td>
+      <td>0.000</td>
       <td>0.110</td>
     </tr>
   </tbody>
@@ -672,18 +725,21 @@ avc_grouped.unsummerized_df
 
 
 
+
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
       <th></th>
-      <th>subgroup_ratio</th>
       <th>count</th>
+      <th>subgroup_ratio</th>
+      <th>subgr_r_diff_subgr_all</th>
       <th>r_vs_total</th>
     </tr>
     <tr>
       <th>CabinArea</th>
       <th>Title</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -693,143 +749,166 @@ avc_grouped.unsummerized_df
     <tr>
       <th rowspan="5" valign="top">B</th>
       <th>Miss.</th>
-      <td>0.298</td>
       <td>14</td>
+      <td>0.298</td>
+      <td>0.094</td>
       <td>0.016</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.340</td>
       <td>16</td>
+      <td>0.340</td>
+      <td>-0.240</td>
       <td>0.018</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.213</td>
       <td>10</td>
+      <td>0.213</td>
+      <td>0.073</td>
       <td>0.011</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.021</td>
       <td>1</td>
+      <td>0.021</td>
+      <td>0.013</td>
       <td>0.001</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.127</td>
       <td>6</td>
+      <td>0.127</td>
+      <td>0.111</td>
       <td>0.007</td>
     </tr>
     <tr>
       <th rowspan="5" valign="top">C</th>
       <th>Miss.</th>
-      <td>0.203</td>
       <td>12</td>
+      <td>0.203</td>
+      <td>-0.001</td>
       <td>0.013</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.492</td>
       <td>29</td>
+      <td>0.492</td>
+      <td>-0.088</td>
       <td>0.033</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.237</td>
       <td>14</td>
+      <td>0.237</td>
+      <td>0.097</td>
       <td>0.016</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.017</td>
       <td>1</td>
+      <td>0.017</td>
+      <td>0.009</td>
       <td>0.001</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.051</td>
       <td>3</td>
+      <td>0.051</td>
+      <td>0.035</td>
       <td>0.003</td>
     </tr>
     <tr>
       <th rowspan="7" valign="top">_na</th>
       <th>Master.</th>
-      <td>0.048</td>
       <td>33</td>
+      <td>0.048</td>
+      <td>0.003</td>
       <td>0.037</td>
     </tr>
     <tr>
       <th>Miss.</th>
-      <td>0.197</td>
       <td>135</td>
+      <td>0.197</td>
+      <td>-0.007</td>
       <td>0.152</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.617</td>
       <td>424</td>
+      <td>0.617</td>
+      <td>0.037</td>
       <td>0.476</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.118</td>
       <td>81</td>
+      <td>0.118</td>
+      <td>-0.022</td>
       <td>0.091</td>
     </tr>
     <tr>
       <th>Rev.</th>
-      <td>0.009</td>
       <td>6</td>
+      <td>0.009</td>
+      <td>0.002</td>
       <td>0.007</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.006</td>
       <td>4</td>
+      <td>0.006</td>
+      <td>-0.002</td>
       <td>0.004</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.006</td>
       <td>4</td>
+      <td>0.006</td>
+      <td>-0.010</td>
       <td>0.004</td>
     </tr>
     <tr>
       <th rowspan="6" valign="top">_other</th>
       <th>Master.</th>
-      <td>0.051</td>
       <td>5</td>
+      <td>0.051</td>
+      <td>0.006</td>
       <td>0.006</td>
     </tr>
     <tr>
       <th>Miss.</th>
-      <td>0.214</td>
       <td>21</td>
+      <td>0.214</td>
+      <td>0.010</td>
       <td>0.024</td>
     </tr>
     <tr>
       <th>Mr.</th>
-      <td>0.490</td>
       <td>48</td>
+      <td>0.490</td>
+      <td>-0.090</td>
       <td>0.054</td>
     </tr>
     <tr>
       <th>Mrs.</th>
-      <td>0.204</td>
       <td>20</td>
+      <td>0.204</td>
+      <td>0.064</td>
       <td>0.022</td>
     </tr>
     <tr>
       <th>_na</th>
-      <td>0.010</td>
       <td>1</td>
+      <td>0.010</td>
+      <td>0.002</td>
       <td>0.001</td>
     </tr>
     <tr>
       <th>_other</th>
-      <td>0.031</td>
       <td>3</td>
+      <td>0.031</td>
+      <td>0.015</td>
       <td>0.003</td>
     </tr>
   </tbody>
@@ -852,7 +931,7 @@ Windows:
 
 Linux / MacOS:
 
-    source .venv/Scripts/activate
+    source .venv/bin/activate
 
 **Install requirements**
 

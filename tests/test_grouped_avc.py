@@ -1,9 +1,11 @@
+from itertools import groupby
+from typing import Any
+
 import numpy as np
 import pytest
 from advanced_value_counts.avc import AdvancedValueCounts as AVC
 
 from .config import COLUMN, DF, GROUPBY_COL
-from .helper_functions import remove_from_index
 
 
 @pytest.mark.parametrize(
@@ -49,7 +51,10 @@ def test_min_group_count_happy(min_group_count):
 
     # don't consider _na and _other as they are
     # insensitive to the min_group_count
-    avc_df = remove_from_index(avc_df, ("_na", "_other", "_all"))
+    avc_df = (
+        avc_df
+        .drop(["_other", "_na", "_all"], errors='ignore')
+    )
 
     try:
         # select the counts from all the _total indices
@@ -77,7 +82,10 @@ def test_min_group_ratio_happy(min_group_ratio):
 
     # don't consider _na and _other as they are insensitive to
     # the min_group_ratio
-    avc_df = remove_from_index(avc_df, ("_na", "_other", "_all"))
+    avc_df = (
+        avc_df
+        .drop(["_na", "_other", "_all"], errors='ignore')
+    )
 
     try:
         # select the subgroup ratios from all the _total indices
@@ -104,8 +112,9 @@ def test_min_subgroup_count_happy(min_subgroup_count):
 
     # remove _other and _na from index as they are insensitive to
     # min_subgroup_count
-    avc_df = remove_from_index(
-        avc_df, ("_other", "_na", "_total"), level=COLUMN
+    avc_df = (
+        avc_df
+        .drop(["_other", "_na", "_total"], level=COLUMN, errors='ignore')
     )
 
     if min_subgroup_count <= avc_df["count"].max():
@@ -127,8 +136,10 @@ def test_min_subgroup_ratio_happy(min_subgroup_ratio):
 
     # remove _other and _na from index as they are
     # insensitive to min_subgroup_count
-    avc_df = remove_from_index(
-        avc_df, ("_other", "_na", "_total"), level=COLUMN
+    avc_df = (
+        avc_df
+        .drop(['_other', "_na", "_total"], level=COLUMN, errors='ignore')
+        .drop(['_all'], level=GROUPBY_COL, errors='ignore')
     )
 
     if min_subgroup_ratio <= avc_df["subgroup_ratio"].max():
@@ -152,8 +163,9 @@ def test_min_subgroup_ratio_vs_total_happy(min_subgroup_ratio_vs_total):
 
     # remove _other and _na from index as they are insensitive to
     # min_subgroup_count
-    avc_df = remove_from_index(
-        avc_df, ("_other", "_na", "_total"), level=COLUMN
+    avc_df = (
+        avc_df
+        .drop(["_other", "_na", "_total"], level=COLUMN, errors='ignore')
     )
 
     if min_subgroup_ratio_vs_total <= avc_df["r_vs_total"].max():
@@ -196,11 +208,42 @@ def test_dropna_false_happy(dropna):
 @pytest.mark.parametrize("dropna", [False])
 def test_grouped_dropna_false_happy(dropna):
     """Test that dropna=false shows na values as _na"""
-    avc = AVC(
+    avc_df = AVC(
         df=DF, column=COLUMN, groupby_col=GROUPBY_COL, dropna=dropna
     ).avc_df
-    avc.loc[(slice(None), "_na"), :]
-
+    avc_df.loc[(slice(None), "_na"), :]
+    
+@pytest.mark.parametrize(
+    "attribute, value",
+    [
+        ("max_groups", 3),
+        ("min_group_ratio", 0.1),
+        ("min_group_count", 5),
+        ("max_subgroups", 5),
+        ("min_subgroup_ratio", 0.2),
+        ("min_subgroup_count", 3),
+        ("min_subgroup_ratio_vs_total", 0.02),
+    ],
+)
+def test_all_subgroups_in_all(attribute: str, value: Any):
+    """Test whether all subgroups in main groups are in
+    the subgroups of _all"""
+    avc = AVC(df=DF, column=COLUMN, groupby_col=GROUPBY_COL)
+    setattr(avc, attribute, value)
+    avc_df = avc.avc_df
+    subgroups = set(
+        avc_df
+        .drop('_all', level=0)
+        .index
+        .get_level_values(1)
+    )
+    subgroups_in_all = set(
+        avc_df
+        .loc['_all']
+        .index
+        .values
+    )
+    assert subgroups == subgroups_in_all
 
 def test_grouped_get_plot_happy():
     """Test whether a plot can be generated without error"""
@@ -214,3 +257,4 @@ def test_grouped_unsummerized_df_happpy():
     avc = AVC(df=DF, column=COLUMN, groupby_col=GROUPBY_COL)
     df = avc.unsummerized_df
     assert "_all" not in df.index and "_total" not in df.index
+

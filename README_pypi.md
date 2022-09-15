@@ -51,7 +51,7 @@ Windows:
 
 Linux / MacOS:
 
-    source .venv/Scripts/activate
+    source .venv/bin/activate
 
 **Install requirements**
 

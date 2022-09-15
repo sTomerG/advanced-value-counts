@@ -3,3 +3,4 @@ numpy==1.23.0
 pandas==1.4.3
 seaborn==0.11.2
 pytest==7.1.2
+flake8==5.0.4
